@@ -33,11 +33,11 @@ export function useAppSounds() {
     }, []);
 
     return {
-        playClick: () => playSound('/sounds/click.mp3', 0.3),
-        playHover: () => playSound('/sounds/swoosh.mp3', 0.1),
-        playBubble: () => playSound('/sounds/bubble.mp3', 0.4),
-        playCorrect: () => playSound('/sounds/correct.mp3', 0.3),
-        playSuccess: () => playSound('/sounds/success.mp3', 0.4),
+        playClick: () => { }, // Disabled
+        playHover: () => { }, // Disabled
+        playBubble: () => { }, // Disabled
+        playCorrect: () => { }, // Disabled
+        playSuccess: () => { }, // Disabled
         startBgMusic,
         stopBgMusic
     };
