@@ -55,8 +55,7 @@ export default function SurveyFlow() {
         if (question.type === 'choice' || question.type === 'scale') {
             setIsAutoAdvancing(true);
             setTimeout(() => {
-                playCorrect(); // Correct/swoosh sound before advancing
-                handleNext();
+                nextStep(); // Just advance, no extra sound
                 setIsAutoAdvancing(false);
             }, 350);
         }
