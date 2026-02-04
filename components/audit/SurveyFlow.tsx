@@ -15,7 +15,7 @@ export default function SurveyFlow() {
     const [isAutoAdvancing, setIsAutoAdvancing] = useState(false);
 
     // Sounds
-    const { playClick, playHover, playTick, playSuccess, startBgMusic } = useAppSounds();
+    const { playClick, playTick, playSuccess, startBgMusic } = useAppSounds();
 
     // Start background music when survey begins
     useEffect(() => {
@@ -103,7 +103,6 @@ export default function SurveyFlow() {
                                 transition={{ delay: idx * 0.05 }}
                                 key={option.value}
                                 onClick={() => handleOptionSelect(option.value)}
-                                onMouseEnter={() => playHover()}
                                 disabled={isAutoAdvancing}
                                 className={`w-full text-left p-4 md:p-5 rounded-2xl border-2 transition-all duration-200 flex items-center justify-between group relative overflow-hidden active:scale-[0.98] tap-highlight-transparent
                   ${responses[question.id] === option.value
@@ -134,7 +133,6 @@ export default function SurveyFlow() {
             <div className="mt-12 flex justify-end">
                 <Button
                     onClick={handleNext}
-                    onMouseEnter={() => playHover()}
                     disabled={!responses[question.id] || isAutoAdvancing}
                     size="lg"
                     className="rounded-full h-12 md:h-14 px-6 md:px-8 text-base md:text-lg bg-slate-900 hover:bg-indigo-600 hover:scale-105 active:scale-95 transition-all shadow-xl w-full md:w-auto"
