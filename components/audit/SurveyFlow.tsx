@@ -7,7 +7,7 @@ import { motion, AnimatePresence } from "framer-motion";
 import { ChevronRight, Check } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
-import useSound from 'use-sound';
+import { useAppSounds } from "@/lib/useAppSounds";
 
 export default function SurveyFlow() {
     const { currentStep, responses, setResponse, nextStep, isFinished, finish } = useAuditStore();
@@ -15,9 +15,7 @@ export default function SurveyFlow() {
     const [isAutoAdvancing, setIsAutoAdvancing] = useState(false);
 
     // Sounds
-    const [playClick] = useSound('/sounds/click.mp3', { volume: 0.5 });
-    const [playSuccess] = useSound('/sounds/success.mp3', { volume: 0.4 });
-    const [playHover] = useSound('/sounds/hover.mp3', { volume: 0.1 });
+    const { playClick, playHover, playSuccess } = useAppSounds();
 
     const question = QUESTIONS[currentStep];
     const totalSteps = QUESTIONS.length;

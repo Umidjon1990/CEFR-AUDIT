@@ -1,17 +1,21 @@
 "use client";
 
-import useSound from 'use-sound';
-
-// Fallback sounds or actual paths - ensuring it doesn't crash if files missing
-// Ideally, we'd have files in /public/sounds/
-const clickUrl = '/sounds/click.mp3';
-const hoverUrl = '/sounds/hover.mp3';
-const successUrl = '/sounds/success.mp3';
+import { useCallback } from "react";
 
 export function useAppSounds() {
-    const [playClick] = useSound(clickUrl, { volume: 0.5 });
-    const [playHover] = useSound(hoverUrl, { volume: 0.2 });
-    const [playSuccess] = useSound(successUrl, { volume: 0.6 });
+    const playSound = useCallback((path: string, volume = 0.5) => {
+        try {
+            const audio = new Audio(path);
+            audio.volume = volume;
+            audio.play().catch(e => console.error("Audio play failed:", e));
+        } catch (e) {
+            console.error("Audio init failed:", e);
+        }
+    }, []);
 
-    return { playClick, playHover, playSuccess };
+    return {
+        playClick: () => playSound('/sounds/click.mp3', 0.5),
+        playHover: () => playSound('/sounds/hover.mp3', 0.2),
+        playSuccess: () => playSound('/sounds/success.mp3', 0.6)
+    };
 }

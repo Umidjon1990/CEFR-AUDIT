@@ -1,14 +1,14 @@
 "use client";
 
 import { useEffect } from "react";
-import useSound from "use-sound";
 
 export default function PageLoadSound() {
-    const [play] = useSound('/sounds/hover.mp3', { volume: 0.1 }); // Subtle entrance sound
-
     useEffect(() => {
-        play();
-    }, [play]);
+        const audio = new Audio('/sounds/hover.mp3');
+        audio.volume = 0.1;
+        // Browsers often block autoplay, so we catch the error silently
+        audio.play().catch(() => { });
+    }, []);
 
     return null;
 }
