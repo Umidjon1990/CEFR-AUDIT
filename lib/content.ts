@@ -194,7 +194,7 @@ export const QUESTIONS: Question[] = [
     // ═══════════════════════════════════════════════════════════════════
     {
         id: 'skill_speaking',
-        text: "Speaking: Gapirganda o'zingizni qanday his qilasiz?",
+        text: "Gapirish (Speaking): Gapirganda o'zingizni qanday his qilasiz?",
         type: 'choice',
         block: 'C',
         options: [
@@ -218,7 +218,7 @@ export const QUESTIONS: Question[] = [
     },
     {
         id: 'skill_listening',
-        text: "Listening: Chet tilidagi videolarni subtitrsiz tushunasizmi?",
+        text: "Tinglab tushunish (Listening): Chet tilidagi videolarni subtitrsiz tushunasizmi?",
         type: 'choice',
         block: 'C',
         options: [
@@ -242,7 +242,7 @@ export const QUESTIONS: Question[] = [
     },
     {
         id: 'skill_vocab',
-        text: "Vocabulary: So'z boyligingiz gapirishga yetadimi?",
+        text: "So'z boyligi (Vocabulary): So'z zaxirangiz gapirishga yetadimi?",
         type: 'choice',
         block: 'C',
         options: [
@@ -266,7 +266,7 @@ export const QUESTIONS: Question[] = [
     },
     {
         id: 'skill_grammar',
-        text: "Grammar: Qoidalarni qanchalik avtomatlashtirgansiz?",
+        text: "Grammatika: Qoidalarni qanchalik avtomatlashtirgansiz?",
         type: 'choice',
         block: 'C',
         options: [
@@ -278,7 +278,7 @@ export const QUESTIONS: Question[] = [
     },
     {
         id: 'skill_writing',
-        text: "Writing: Chet tilida yozganda qanday his qilasiz?",
+        text: "Yozish (Writing): Chet tilida yozganda qanday his qilasiz?",
         type: 'choice',
         block: 'C',
         options: [

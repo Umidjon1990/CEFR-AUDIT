@@ -41,5 +41,6 @@ export interface AuditResult {
         dailyWords: number;
         timeline: string;
         focusSkill?: string;
+        actionPlan: string[];
     };
 }

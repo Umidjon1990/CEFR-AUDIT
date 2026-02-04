@@ -11,11 +11,11 @@ import { motion } from "framer-motion";
 import Link from "next/link";
 
 const SKILL_NAMES: Record<string, string> = {
-    speaking: 'Speaking',
-    listening: 'Listening',
-    writing: 'Writing',
-    vocabulary: 'Vocabulary',
-    grammar: 'Grammar'
+    speaking: 'Gapirish',
+    listening: 'Tinglab tushunish',
+    writing: 'Yozish',
+    vocabulary: 'So\'z boyligi',
+    grammar: 'Grammatika'
 };
 
 export default function ReportDashboard() {
@@ -199,12 +199,12 @@ export default function ReportDashboard() {
                             animate={{ opacity: 1, x: 0 }}
                             transition={{ delay: 0.4 + idx * 0.1 }}
                             className={`bg-white border-2 rounded-xl p-4 flex items-start shadow-sm ${blocker.impact === 'high' ? 'border-red-200 bg-red-50/50' :
-                                    blocker.impact === 'medium' ? 'border-yellow-200 bg-yellow-50/50' :
-                                        'border-green-200 bg-green-50/50'
+                                blocker.impact === 'medium' ? 'border-yellow-200 bg-yellow-50/50' :
+                                    'border-green-200 bg-green-50/50'
                                 }`}
                         >
                             <div className={`mt-0.5 h-6 w-6 rounded-full flex items-center justify-center mr-3 shrink-0 text-white font-bold text-sm ${blocker.impact === 'high' ? 'bg-red-500' :
-                                    blocker.impact === 'medium' ? 'bg-yellow-500' : 'bg-green-500'
+                                blocker.impact === 'medium' ? 'bg-yellow-500' : 'bg-green-500'
                                 }`}>
                                 {idx + 1}
                             </div>
@@ -215,6 +215,27 @@ export default function ReportDashboard() {
                                 </p>
                             </div>
                         </motion.div>
+                    ))}
+                </div>
+            </motion.div>
+
+            {/* Detailed Advice Section (New) */}
+            <motion.div
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ delay: 0.55 }}
+                className="bg-white border rounded-xl p-5 shadow-sm"
+            >
+                <h2 className="text-xl font-bold text-slate-900 mb-4 flex items-center">
+                    <Target className="mr-2 text-blue-600" />
+                    Maxsus tavsiyalar
+                </h2>
+                <div className="space-y-4">
+                    {result.recommendations.actionPlan.map((action, idx) => (
+                        <div key={idx} className="flex gap-3">
+                            <div className="bg-blue-100 text-blue-700 h-6 w-6 rounded-full flex items-center justify-center shrink-0 text-sm font-bold">{idx + 1}</div>
+                            <p className="text-slate-600 dark:text-slate-300">{action}</p>
+                        </div>
                     ))}
                 </div>
             </motion.div>
