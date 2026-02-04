@@ -15,7 +15,7 @@ export default function SurveyFlow() {
     const [isAutoAdvancing, setIsAutoAdvancing] = useState(false);
 
     // Sounds
-    const { playClick, playTick, playSuccess, startBgMusic } = useAppSounds();
+    const { playClick, playBubble, playSuccess, startBgMusic } = useAppSounds();
 
     // Start background music when survey begins
     useEffect(() => {
@@ -47,7 +47,7 @@ export default function SurveyFlow() {
     const handleOptionSelect = (val: string | number) => {
         if (isAutoAdvancing) return;
 
-        playTick(); // Tick sound on selection
+        playBubble(); // Bubble sound on selection
         setResponse(question.id, val);
 
         // Auto advance for single choice

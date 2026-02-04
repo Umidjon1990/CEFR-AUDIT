@@ -35,8 +35,7 @@ export function useAppSounds() {
     return {
         playClick: () => playSound('/sounds/click.mp3', 0.3),
         playHover: () => playSound('/sounds/swoosh.mp3', 0.1),
-        playPop: () => playSound('/sounds/pop.mp3', 0.25),
-        playTick: () => playSound('/sounds/tick.mp3', 0.4),
+        playBubble: () => playSound('/sounds/bubble.mp3', 0.4),
         playCorrect: () => playSound('/sounds/correct.mp3', 0.3),
         playSuccess: () => playSound('/sounds/success.mp3', 0.4),
         startBgMusic,
