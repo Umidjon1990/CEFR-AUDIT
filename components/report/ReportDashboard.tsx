@@ -6,9 +6,9 @@ import { useEffect, useState, useRef } from "react";
 import { AuditResult } from "@/lib/types";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { AlertTriangle, CheckCircle, Clock, Award, Target, TrendingUp, Download, RotateCcw } from "lucide-react";
+import { AlertTriangle, Download, RotateCcw } from "lucide-react"; // Only keep utility icons
 import { motion } from "framer-motion";
-import Link from "next/link";
+import Image from "next/image"; // For 3D icons
 
 const SKILL_NAMES: Record<string, string> = {
     speaking: 'Gapirish',
@@ -66,51 +66,56 @@ export default function ReportDashboard() {
     };
 
     return (
-        <div ref={reportRef} className="max-w-4xl mx-auto p-6 space-y-8 pb-20 print:p-4 print:max-w-none">
+        <div ref={reportRef} className="max-w-4xl mx-auto p-6 space-y-10 pb-20 print:p-4 print:max-w-none">
 
             {/* Header */}
             <motion.div
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
-                className="text-center space-y-3 print:space-y-1"
+                className="text-center space-y-4 print:space-y-1"
             >
-                <div className="inline-flex items-center gap-2 bg-indigo-100 text-indigo-700 px-4 py-2 rounded-full text-sm font-medium">
-                    <Target className="h-4 w-4" />
-                    Maqsad: {result.level}
+                <div className="inline-flex items-center gap-2 bg-gradient-to-r from-indigo-500 to-purple-600 text-white px-5 py-2 rounded-full text-sm font-bold shadow-lg shadow-indigo-200">
+                    <span>🎯 Maqsad: {result.level}</span>
                 </div>
-                <h1 className="text-4xl font-bold text-slate-900 print:text-2xl">CEFR Audit Natijasi</h1>
-                <p className="text-slate-500">Sizning shaxsiy diagnostika hisobotingiz</p>
+                <h1 className="text-4xl md:text-5xl font-extrabold text-slate-900 print:text-2xl tracking-tight">
+                    Audit Natijasi
+                </h1>
+                <p className="text-lg text-slate-500 max-w-lg mx-auto leading-relaxed">
+                    Sizning til o'rganish jarayoningizning to'liq 360° tahlili
+                </p>
             </motion.div>
 
-            {/* Main Metrics Grid */}
+            {/* Main Metrics Grid with 3D Icons */}
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6 print:gap-3">
 
                 {/* Consistency Score */}
                 <motion.div initial={{ opacity: 0, scale: 0.95 }} animate={{ opacity: 1, scale: 1 }} transition={{ delay: 0.1 }}>
-                    <Card className="border-l-4 border-l-blue-500 overflow-hidden h-full">
+                    <Card className="border-0 shadow-xl shadow-slate-200/50 overflow-hidden h-full relative group hover:-translate-y-1 transition-transform duration-300">
+                        <div className="absolute top-0 right-0 p-4 opacity-10 group-hover:opacity-20 transition-opacity">
+                            <Image src="/icons/rocket-dynamic-color.png" alt="consistency" width={120} height={120} className="object-contain" />
+                        </div>
                         <CardHeader className="pb-2">
-                            <CardTitle className="text-sm font-medium text-slate-500 uppercase tracking-wider flex items-center gap-2">
-                                <TrendingUp className="h-4 w-4" />
-                                Muntazamlik Indeksi
+                            <CardTitle className="text-sm font-bold text-slate-500 uppercase tracking-wider flex items-center gap-2">
+                                <span className="bg-blue-100 p-1.5 rounded-lg">🚀</span> Muntazamlik
                             </CardTitle>
                         </CardHeader>
                         <CardContent>
-                            <div className="flex items-end gap-2">
-                                <span className={`text-5xl font-bold ${getScoreColor(result.consistency)}`}>{result.consistency}</span>
-                                <span className="text-lg text-slate-400 mb-2">/ 100</span>
+                            <div className="flex items-end gap-3">
+                                <span className={`text-6xl font-black ${getScoreColor(result.consistency)}`}>{result.consistency}</span>
+                                <span className="text-xl text-slate-400 mb-2 font-medium">/ 100</span>
                             </div>
-                            <div className="h-3 bg-slate-100 rounded-full mt-4 overflow-hidden">
+                            <div className="h-4 bg-slate-100 rounded-full mt-5 overflow-hidden ring-1 ring-slate-100">
                                 <motion.div
                                     initial={{ width: 0 }}
                                     animate={{ width: `${result.consistency}%` }}
-                                    transition={{ duration: 1, ease: "easeOut" }}
-                                    className={`h-full rounded-full ${getBarColor(result.consistency)}`}
+                                    transition={{ duration: 1.2, ease: "circOut" }}
+                                    className={`h-full rounded-full shadow-sm ${getBarColor(result.consistency)}`}
                                 />
                             </div>
-                            <p className="text-sm text-slate-500 mt-3">
-                                {result.consistency >= 70 ? "Ajoyib! O'qish tizimingiz barqaror." :
-                                    result.consistency >= 40 ? "O'rtacha. Muntazamlikni oshirish kerak." :
-                                        "Past. Bu eng katta muammo!"}
+                            <p className="text-sm font-medium text-slate-600 mt-4 leading-relaxed">
+                                {result.consistency >= 70 ? "🚀 Ajoyib! Sizning o'qish tizimingiz juda barqaror." :
+                                    result.consistency >= 40 ? "⚖️ Yomon emas, lekin barqarorlik yetishmayapti." :
+                                        "⚠️ Diqqat! O'qishda uzilishlar juda ko'p."}
                             </p>
                         </CardContent>
                     </Card>
@@ -118,170 +123,121 @@ export default function ReportDashboard() {
 
                 {/* Psychology Risk */}
                 <motion.div initial={{ opacity: 0, scale: 0.95 }} animate={{ opacity: 1, scale: 1 }} transition={{ delay: 0.2 }}>
-                    <Card className={`border-l-4 overflow-hidden h-full ${result.psychologyRisk > 50 ? 'border-l-red-500' : 'border-l-green-500'}`}>
+                    <Card className="border-0 shadow-xl shadow-slate-200/50 overflow-hidden h-full relative group hover:-translate-y-1 transition-transform duration-300">
+                        <div className="absolute top-0 right-0 p-4 opacity-10 group-hover:opacity-20 transition-opacity">
+                            <Image src="/icons/target-dynamic-color.png" alt="psychology" width={120} height={120} className="object-contain" />
+                        </div>
                         <CardHeader className="pb-2">
-                            <CardTitle className="text-sm font-medium text-slate-500 uppercase tracking-wider flex items-center gap-2">
-                                <AlertTriangle className="h-4 w-4" />
-                                Psixologik Xavf
+                            <CardTitle className="text-sm font-bold text-slate-500 uppercase tracking-wider flex items-center gap-2">
+                                <span className="bg-red-100 p-1.5 rounded-lg">🧠</span> Psixologik Xavf
                             </CardTitle>
                         </CardHeader>
                         <CardContent>
-                            <div className="flex items-end gap-2">
-                                <span className={`text-5xl font-bold ${getScoreColor(result.psychologyRisk, true)}`}>{result.psychologyRisk}</span>
-                                <span className="text-lg text-slate-400 mb-2">/ 100</span>
+                            <div className="flex items-end gap-3">
+                                <span className={`text-6xl font-black ${getScoreColor(result.psychologyRisk, true)}`}>{result.psychologyRisk}</span>
+                                <span className="text-xl text-slate-400 mb-2 font-medium">/ 100</span>
                             </div>
-                            <div className="h-3 bg-slate-100 rounded-full mt-4 overflow-hidden">
+                            <div className="h-4 bg-slate-100 rounded-full mt-5 overflow-hidden ring-1 ring-slate-100">
                                 <motion.div
                                     initial={{ width: 0 }}
                                     animate={{ width: `${result.psychologyRisk}%` }}
-                                    transition={{ duration: 1, ease: "easeOut" }}
-                                    className={`h-full rounded-full ${getBarColor(result.psychologyRisk, true)}`}
+                                    transition={{ duration: 1.2, ease: "circOut" }}
+                                    className={`h-full rounded-full shadow-sm ${getBarColor(result.psychologyRisk, true)}`}
                                 />
                             </div>
-                            <p className="text-sm text-slate-500 mt-3">
-                                {result.psychologyRisk <= 30 ? "Zo'r! Psixologik holatiz yaxshi." :
-                                    result.psychologyRisk <= 60 ? "O'rtacha. Stress bilan ishlash kerak." :
-                                        "Yuqori! Qo'rquv va chalg'ish bilan kurashish kerak."}
+                            <p className="text-sm font-medium text-slate-600 mt-4 leading-relaxed">
+                                {result.psychologyRisk <= 30 ? "✅ Holatingiz a'lo! O'zingizga ishonch yuqori." :
+                                    result.psychologyRisk <= 60 ? "⚠️ O'rtacha xavf. Stress va chalg'ish bor." :
+                                        "⛔️ Kritik! Qo'rquv sizni to'xtatib turibdi."}
                             </p>
                         </CardContent>
                     </Card>
                 </motion.div>
             </div>
 
-            {/* Skill Distribution */}
-            <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.25 }}>
-                <Card>
-                    <CardHeader>
-                        <CardTitle className="flex items-center gap-2">
-                            <Target className="h-5 w-5 text-indigo-600" />
-                            Skill Taqsimoti
-                            {result.recommendations.focusSkill && (
-                                <span className="ml-auto text-sm font-normal text-amber-600 bg-amber-50 px-3 py-1 rounded-full">
-                                    Fokus: {SKILL_NAMES[result.recommendations.focusSkill]}
-                                </span>
-                            )}
-                        </CardTitle>
-                    </CardHeader>
-                    <CardContent className="space-y-4">
-                        {Object.entries(result.skillUsage).map(([skill, score]) => (
-                            <div key={skill} className="space-y-1">
-                                <div className="flex justify-between text-sm">
-                                    <span className={`font-medium ${result.recommendations.focusSkill === skill ? 'text-amber-700' : 'text-slate-700'}`}>
-                                        {SKILL_NAMES[skill]}
-                                    </span>
-                                    <span className={getScoreColor(score)}>{score}%</span>
-                                </div>
-                                <div className="h-2 bg-slate-100 rounded-full overflow-hidden">
-                                    <motion.div
-                                        initial={{ width: 0 }}
-                                        animate={{ width: `${score}%` }}
-                                        transition={{ duration: 0.8, delay: 0.3 }}
-                                        className={`h-full rounded-full ${result.recommendations.focusSkill === skill ? 'bg-amber-500' : getBarColor(score)}`}
-                                    />
-                                </div>
-                            </div>
-                        ))}
-                    </CardContent>
-                </Card>
-            </motion.div>
+            {/* Personal Plan (Reordered for emphasis) */}
+            <motion.div
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ delay: 0.4 }}
+                className="bg-indigo-600 rounded-3xl p-8 text-white relative overflow-hidden shadow-2xl shadow-indigo-300"
+            >
+                {/* Background Pattern */}
+                <div className="absolute top-0 right-0 -mt-10 -mr-10 w-64 h-64 bg-white opacity-5 rounded-full blur-3xl pointer-events-none"></div>
+                <div className="absolute bottom-0 left-0 -mb-10 -ml-10 w-64 h-64 bg-indigo-900 opacity-20 rounded-full blur-3xl pointer-events-none"></div>
 
-            {/* Top Blockers */}
-            <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.3 }}>
-                <h2 className="text-xl font-bold text-slate-900 mb-4 flex items-center">
-                    <AlertTriangle className="mr-2 text-amber-500" />
-                    Sizni to'xtatib turgan to'siqlar
-                </h2>
-                <div className="space-y-3">
-                    {result.topBlockers.map((blocker, idx) => (
-                        <motion.div
-                            key={blocker.id}
-                            initial={{ opacity: 0, x: -20 }}
-                            animate={{ opacity: 1, x: 0 }}
-                            transition={{ delay: 0.4 + idx * 0.1 }}
-                            className={`bg-white border-2 rounded-xl p-4 flex items-start shadow-sm ${blocker.impact === 'high' ? 'border-red-200 bg-red-50/50' :
-                                blocker.impact === 'medium' ? 'border-yellow-200 bg-yellow-50/50' :
-                                    'border-green-200 bg-green-50/50'
-                                }`}
-                        >
-                            <div className={`mt-0.5 h-6 w-6 rounded-full flex items-center justify-center mr-3 shrink-0 text-white font-bold text-sm ${blocker.impact === 'high' ? 'bg-red-500' :
-                                blocker.impact === 'medium' ? 'bg-yellow-500' : 'bg-green-500'
-                                }`}>
-                                {idx + 1}
-                            </div>
-                            <div>
-                                <h3 className="font-semibold text-slate-800">{blocker.description}</h3>
-                                <p className="text-sm text-slate-500">
-                                    Ta'siri: {blocker.impact === 'high' ? 'Yuqori (Kritik)' : blocker.impact === 'medium' ? 'O\'rtacha' : 'Past'}
-                                </p>
-                            </div>
-                        </motion.div>
-                    ))}
+                <div className="relative z-10">
+                    <h2 className="text-2xl font-bold mb-8 flex items-center">
+                        <span className="text-3xl mr-3">💎</span>
+                        Siz uchun Shaxsiy Reja
+                    </h2>
+
+                    <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+                        <div className="bg-white/10 backdrop-blur-md rounded-2xl p-5 border border-white/10 hover:bg-white/20 transition-colors">
+                            <div className="text-indigo-200 text-sm font-medium mb-1 flex items-center gap-2"><ClockIcon /> Vaqt</div>
+                            <div className="text-3xl font-bold">{result.recommendations.dailyTime}</div>
+                            <div className="text-xs text-indigo-200 mt-2">Kunlik tavsiya</div>
+                        </div>
+                        <div className="bg-white/10 backdrop-blur-md rounded-2xl p-5 border border-white/10 hover:bg-white/20 transition-colors">
+                            <div className="text-indigo-200 text-sm font-medium mb-1 flex items-center gap-2"><BookIcon /> So'zlar</div>
+                            <div className="text-3xl font-bold">{result.recommendations.dailyWords} ta</div>
+                            <div className="text-xs text-indigo-200 mt-2">Yangi so'z (Active)</div>
+                        </div>
+                        <div className="bg-white/10 backdrop-blur-md rounded-2xl p-5 border border-white/10 hover:bg-white/20 transition-colors">
+                            <div className="text-indigo-200 text-sm font-medium mb-1 flex items-center gap-2"><CalendarIcon /> Muddat</div>
+                            <div className="text-3xl font-bold text-emerald-300">{result.recommendations.timeline}</div>
+                            <div className="text-xs text-indigo-200 mt-2">Taxminiy natija</div>
+                        </div>
+                    </div>
                 </div>
             </motion.div>
 
-            {/* Detailed Advice Section (New) */}
+            {/* Detailed Advice Section */}
             <motion.div
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ delay: 0.55 }}
-                className="bg-white border rounded-xl p-5 shadow-sm"
+                className="bg-white border-0 shadow-lg rounded-2xl p-6 md:p-8"
             >
-                <h2 className="text-xl font-bold text-slate-900 mb-4 flex items-center">
-                    <Target className="mr-2 text-blue-600" />
-                    Maxsus tavsiyalar
-                </h2>
+                <div className="flex items-center gap-4 mb-6">
+                    <Image src="/icons/notebook-dynamic-color.png" alt="advice" width={60} height={60} className="object-contain" />
+                    <h2 className="text-2xl font-bold text-slate-900">
+                        Maxsus tavsiyalar
+                    </h2>
+                </div>
+
                 <div className="space-y-4">
                     {result.recommendations.actionPlan.map((action, idx) => (
-                        <div key={idx} className="flex gap-3">
-                            <div className="bg-blue-100 text-blue-700 h-6 w-6 rounded-full flex items-center justify-center shrink-0 text-sm font-bold">{idx + 1}</div>
-                            <p className="text-slate-600 dark:text-slate-300">{action}</p>
+                        <div key={idx} className="flex gap-4 p-4 rounded-xl bg-slate-50 border border-slate-100 hover:bg-white hover:shadow-md transition-all">
+                            <div className="bg-indigo-600 text-white h-8 w-8 rounded-full flex items-center justify-center shrink-0 text-sm font-bold shadow-md shadow-indigo-200">{idx + 1}</div>
+                            <p className="text-slate-700 font-medium leading-relaxed">{action}</p>
                         </div>
                     ))}
                 </div>
             </motion.div>
 
-            {/* Recommendations */}
-            <motion.div
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ delay: 0.5 }}
-                className="bg-gradient-to-br from-indigo-50 to-violet-50 rounded-2xl p-6 border border-indigo-100 print:bg-white"
-            >
-                <h2 className="text-xl font-bold text-indigo-900 mb-6 flex items-center">
-                    <Award className="mr-2 text-indigo-600" />
-                    Siz uchun shaxsiy reja
+            {/* Top Blockers */}
+            <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.6 }}>
+                <h2 className="text-lg font-bold text-slate-700 mb-4 px-2">
+                    🚫 Asosiy to'siqlar
                 </h2>
-                <div className="grid grid-cols-1 sm:grid-cols-3 gap-6">
-                    <div className="bg-white p-5 rounded-xl shadow-sm border border-indigo-100 text-center">
-                        <div className="mx-auto w-12 h-12 rounded-full bg-indigo-100 flex items-center justify-center mb-3">
-                            <Clock className="h-6 w-6 text-indigo-600" />
+                <div className="space-y-3">
+                    {result.topBlockers.map((blocker, idx) => (
+                        <div
+                            key={blocker.id}
+                            className={`border-l-4 rounded-r-xl p-4 flex items-center bg-white shadow-sm ${blocker.impact === 'high' ? 'border-l-red-500' :
+                                blocker.impact === 'medium' ? 'border-l-yellow-500' :
+                                    'border-l-green-500'
+                                }`}
+                        >
+                            <div className="flex-1">
+                                <h3 className="font-bold text-slate-800">{blocker.description}</h3>
+                                <p className="text-xs text-slate-400 mt-1 uppercase font-bold tracking-wider">
+                                    {blocker.impact === 'high' ? 'Yuqori (Kritik)' : blocker.impact === 'medium' ? 'O\'rtacha' : 'Past'}
+                                </p>
+                            </div>
                         </div>
-                        <div className="font-bold text-2xl text-slate-900">{result.recommendations.dailyTime}</div>
-                        <div className="text-sm text-slate-500 mt-1">Kunlik o'qish vaqti</div>
-                    </div>
-                    <div className="bg-white p-5 rounded-xl shadow-sm border border-violet-100 text-center">
-                        <div className="mx-auto w-12 h-12 rounded-full bg-violet-100 flex items-center justify-center mb-3">
-                            <Target className="h-6 w-6 text-violet-600" />
-                        </div>
-                        <div className="font-bold text-2xl text-slate-900">{result.recommendations.dailyWords} ta</div>
-                        <div className="text-sm text-slate-500 mt-1">Yangi so'z (Aktiv)</div>
-                    </div>
-                    <div className="bg-white p-5 rounded-xl shadow-sm border border-emerald-100 text-center">
-                        <div className="mx-auto w-12 h-12 rounded-full bg-emerald-100 flex items-center justify-center mb-3">
-                            <CheckCircle className="h-6 w-6 text-emerald-600" />
-                        </div>
-                        <div className="font-bold text-2xl text-slate-900">{result.recommendations.timeline}</div>
-                        <div className="text-sm text-slate-500 mt-1">Taxminiy muddat</div>
-                    </div>
-                </div>
-
-                <div className="mt-6 p-4 bg-white/80 rounded-xl border border-indigo-100">
-                    <p className="text-sm text-slate-600 leading-relaxed">
-                        <strong className="text-indigo-700">Eslatma:</strong> Bu natijalar sizning javoblaringizga asoslangan taxminiy prognoz.
-                        Haqiqiy natija muntazamlik va intizomga bog'liq. Har kuni {result.recommendations.dailyTime.split(' ')[0]} daqiqa
-                        ajratib, {result.recommendations.dailyWords} ta so'zni aktiv ishlating.
-                        {result.recommendations.focusSkill && ` Eng zaif tomoning — ${SKILL_NAMES[result.recommendations.focusSkill]}, unga ko'proq e'tibor ber.`}
-                    </p>
+                    ))}
                 </div>
             </motion.div>
 
@@ -289,24 +245,24 @@ export default function ReportDashboard() {
             <motion.div
                 initial={{ opacity: 0 }}
                 animate={{ opacity: 1 }}
-                transition={{ delay: 0.6 }}
-                className="flex flex-col sm:flex-row gap-4 justify-center pt-4 print:hidden"
+                transition={{ delay: 0.7 }}
+                className="flex flex-col sm:flex-row gap-4 justify-center pt-8 print:hidden"
             >
                 <Button
                     variant="outline"
                     size="lg"
                     onClick={handleReset}
-                    className="gap-2"
+                    className="gap-2 h-14 px-8 rounded-full text-lg border-2"
                 >
-                    <RotateCcw className="h-4 w-4" />
+                    <RotateCcw className="h-5 w-5" />
                     Qayta topshirish
                 </Button>
                 <Button
                     size="lg"
                     onClick={handlePrint}
-                    className="gap-2 bg-indigo-600 hover:bg-indigo-700"
+                    className="gap-2 h-14 px-10 rounded-full text-lg bg-indigo-600 hover:bg-indigo-700 shadow-xl shadow-indigo-200"
                 >
-                    <Download className="h-4 w-4" />
+                    <Download className="h-5 w-5" />
                     PDF yuklab olish
                 </Button>
             </motion.div>
@@ -318,3 +274,8 @@ export default function ReportDashboard() {
         </div>
     );
 }
+
+// Mini components for icons
+function ClockIcon() { return <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><circle cx="12" cy="12" r="10" /><polyline points="12 6 12 12 16 14" /></svg> }
+function BookIcon() { return <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20" /><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z" /></svg> }
+function CalendarIcon() { return <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><rect x="3" y="4" width="18" height="18" rx="2" ry="2" /><line x1="16" y1="2" x2="16" y2="6" /><line x1="8" y1="2" x2="8" y2="6" /><line x1="3" y1="10" x2="21" y2="10" /></svg> }
