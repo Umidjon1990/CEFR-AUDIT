@@ -1,8 +1,14 @@
+"use client";
+
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
+import PageLoadSound from "@/components/ui/PageLoadSound";
 import { ArrowRight, BarChart3, Target, Zap } from "lucide-react";
+import { useAppSounds } from "@/lib/useAppSounds";
 
 export default function Home() {
+  const { playClick, playHover } = useAppSounds();
+
   return (
     <main className="flex min-h-screen flex-col items-center justify-center bg-[radial-gradient(ellipse_at_top,_var(--tw-gradient-stops))] from-indigo-100 via-slate-50 to-white px-6 overflow-hidden">
       <div className="max-w-4xl text-center space-y-8 animate-in fade-in zoom-in duration-700">
@@ -13,10 +19,12 @@ export default function Home() {
           Test emas. Professional Audit.
         </div>
 
+        <PageLoadSound />
+
         {/* Hero Title */}
         <h1 className="text-5xl md:text-7xl font-bold tracking-tight text-slate-900 leading-[1.1]">
-          Til o‘rganishda nega <br />
-          <span className="text-transparent bg-clip-text bg-gradient-to-r from-indigo-600 to-violet-600">tiqilib qoldingiz?</span>
+          Nega til o‘rganishda <br />
+          <span className="text-transparent bg-clip-text bg-gradient-to-r from-indigo-600 to-violet-600">natija qila olmayapsiz?</span>
         </h1>
 
         {/* Subtitle */}
@@ -28,7 +36,12 @@ export default function Home() {
         {/* CTA */}
         <div className="pt-8 pb-12">
           <Link href="/audit">
-            <Button size="lg" className="h-16 px-10 text-lg rounded-full shadow-xl shadow-indigo-200/50 hover:shadow-2xl hover:shadow-indigo-300/50 hover:-translate-y-1 transition-all bg-indigo-600 hover:bg-indigo-700 duration-300">
+            <Button
+              size="lg"
+              onMouseEnter={() => playHover()}
+              onClick={() => playClick()}
+              className="h-16 px-10 text-lg rounded-full shadow-xl shadow-indigo-200/50 hover:shadow-2xl hover:shadow-indigo-300/50 hover:-translate-y-1 transition-all bg-indigo-600 hover:bg-indigo-700 duration-300"
+            >
               Auditni boshlash
               <ArrowRight className="ml-2 h-5 w-5" />
             </Button>
