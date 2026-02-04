@@ -6,9 +6,15 @@ import PageLoadSound from "@/components/ui/PageLoadSound";
 import { ArrowRight, Zap } from "lucide-react";
 import { useAppSounds } from "@/lib/useAppSounds";
 import Image from "next/image";
+import { useEffect } from "react";
 
 export default function Home() {
-  const { playClick, playHover } = useAppSounds();
+  const { playClick, playHover, startBgMusic } = useAppSounds();
+
+  // Start background music on landing page
+  useEffect(() => {
+    startBgMusic();
+  }, [startBgMusic]);
 
   return (
     <main className="flex min-h-screen flex-col items-center justify-center bg-[radial-gradient(ellipse_at_top,_var(--tw-gradient-stops))] from-indigo-100 via-slate-50 to-white px-6 overflow-hidden relative">
