@@ -15,7 +15,12 @@ export default function SurveyFlow() {
     const [isAutoAdvancing, setIsAutoAdvancing] = useState(false);
 
     // Sounds
-    const { playClick, playHover, playSuccess } = useAppSounds();
+    const { playClick, playHover, playPop, playCorrect, playSuccess, startBgMusic } = useAppSounds();
+
+    // Start background music when survey begins
+    useEffect(() => {
+        startBgMusic();
+    }, [startBgMusic]);
 
     const question = QUESTIONS[currentStep];
     const totalSteps = QUESTIONS.length;
@@ -43,16 +48,17 @@ export default function SurveyFlow() {
     const handleOptionSelect = (val: string | number) => {
         if (isAutoAdvancing) return;
 
-        playClick();
+        playPop(); // Pop sound on selection
         setResponse(question.id, val);
 
         // Auto advance for single choice
         if (question.type === 'choice' || question.type === 'scale') {
             setIsAutoAdvancing(true);
             setTimeout(() => {
+                playCorrect(); // Correct/swoosh sound before advancing
                 handleNext();
                 setIsAutoAdvancing(false);
-            }, 300);
+            }, 350);
         }
     };
 
@@ -102,7 +108,7 @@ export default function SurveyFlow() {
                                 onMouseEnter={() => playHover()}
                                 disabled={isAutoAdvancing}
                                 className={`w-full text-left p-4 md:p-5 rounded-2xl border-2 transition-all duration-200 flex items-center justify-between group relative overflow-hidden active:scale-[0.98] tap-highlight-transparent
-                    ${responses[question.id] === option.value
+                  ${responses[question.id] === option.value
                                         ? "border-indigo-600 bg-indigo-50/80 shadow-lg shadow-indigo-100 ring-1 ring-indigo-600"
                                         : "border-slate-100 bg-white hover:border-indigo-200 hover:bg-slate-50/80 hover:shadow-md"
                                     }`}
