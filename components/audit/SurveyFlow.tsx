@@ -15,7 +15,7 @@ export default function SurveyFlow() {
     const [isAutoAdvancing, setIsAutoAdvancing] = useState(false);
 
     // Sounds
-    const { playClick, playHover, playPop, playCorrect, playSuccess, startBgMusic } = useAppSounds();
+    const { playClick, playHover, playTick, playSuccess, startBgMusic } = useAppSounds();
 
     // Start background music when survey begins
     useEffect(() => {
@@ -37,7 +37,6 @@ export default function SurveyFlow() {
     }, [isFinished, router, playSuccess]);
 
     const handleNext = () => {
-        playClick();
         if (currentStep < totalSteps - 1) {
             nextStep();
         } else {
@@ -48,7 +47,7 @@ export default function SurveyFlow() {
     const handleOptionSelect = (val: string | number) => {
         if (isAutoAdvancing) return;
 
-        playPop(); // Pop sound on selection
+        playTick(); // Tick sound on selection
         setResponse(question.id, val);
 
         // Auto advance for single choice
